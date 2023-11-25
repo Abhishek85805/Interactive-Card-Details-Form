@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Form from '../components/Form';
 import backgroundImage from '../photos/bg-main-desktop.png';
 import frontCardImage from '../photos/bg-card-front.png';
@@ -17,6 +17,18 @@ const Active = () => {
     backgroundPosition: 'center',
   }
 
+  const [formData, setFormData] = useState({
+    name: 'JANE APPLESEED',
+    number: '0000 0000 0000 0000',
+    date: '0000-00-00',
+    cvc: '000',
+  })
+
+  const handleFormSubmit = (data) => {
+    setFormData(data);
+    console.log(data);
+  }
+
   return (
     <div className="h-screen w-screen flex border">
       <div className="h-full w-1/3 border" style={leftDiv}>
@@ -26,11 +38,11 @@ const Active = () => {
             <div className="w-4 h-4 rounded-full border border-white"></div>
           </div>
           <div className='text-white text-lg mb-6'>
-            0000 0000 0000 0000
+            {formData.number}
           </div>
           <div className="text-white text-sm flex justify-between">
-            <span>JANE APPLESEED</span>
-            <span>00/00</span>
+            <span>{formData.name}</span>
+            <span>{formData.date}</span>
           </div>
         </div>
         <div className="h-52 w-96 rounded-lg relative top-40 one:left-64 two:left-32">
@@ -38,7 +50,7 @@ const Active = () => {
         </div>
       </div>
       <div className="flex justify-center items-center h-full w-2/3 border">
-        <Form />
+        <Form onSubmit={handleFormSubmit}/>
       </div>
     </div>
   );
