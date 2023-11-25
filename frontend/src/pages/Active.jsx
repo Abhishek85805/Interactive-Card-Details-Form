@@ -17,6 +17,12 @@ const Active = () => {
     backgroundPosition: 'center',
   }
 
+  const backCard = {
+    backgroundImage: `url(${backCardImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  }
+
   const [formData, setFormData] = useState({
     name: 'JANE APPLESEED',
     number: '0000 0000 0000 0000',
@@ -45,8 +51,8 @@ const Active = () => {
             <span>{formData.date}</span>
           </div>
         </div>
-        <div className="h-52 w-96 rounded-lg relative top-40 one:left-64 two:left-32">
-          <img src={backCardImage} alt="back-image"/>
+        <div className="h-52 w-96 rounded-lg relative top-40 one:left-64 two:left-32 flex justify-end items-center p-10" style={backCard}>
+          <p className="text-white">{formData.cvc}</p>
         </div>
       </div>
       <div className="flex justify-center items-center h-full w-2/3 border">
