@@ -10,6 +10,35 @@ const Form = ({onSubmit}) => {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () =>{
+    let isValid = true;
+    const newError = {};
+
+    if(!formData.name){
+      newError.name = "Name is required";
+      isValid = false;
+    }
+
+    if(!formData.number){
+      newError.number = "Number is required";
+      isValid = false;
+    }
+
+    if(!formData.date){
+      newError.date = "Date is required";
+      isValid = false;
+    }
+
+    if(!formData.cvc){
+      newError.cvc = "cvc is required";
+      isValid = false;
+    }
+
+    setErrors(newError);
+    return isValid;
+  }
 
   const handleInputChange = (event) => {
     const {name, value} = event.target;
@@ -19,8 +48,22 @@ const Form = ({onSubmit}) => {
     })
   }
 
+  const handleInputChangeForNumber = (e) =>{
+    setFormData({
+      ...formData,
+      number: e.target.value
+      .replace(/\D/g, '')
+      .replace(/(\d{4})/g, '$1 ')
+      .trim()
+    })
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
+    if(!validateForm()){
+      console.log('Form submission failed due to validation errors.');
+      return;
+    }
     console.log("Form Data: ", formData);
     onSubmit(formData);
     setFormData({
@@ -66,6 +109,7 @@ const Form = ({onSubmit}) => {
             onChange = {handleInputChange}
             className = "border-2 border-gray-300 h-9 pl-2 rounded-lg"
             />
+            <p className="text-red-500">{errors.name}</p>
           </div>
           <div className="flex flex-col">
             <label htmlFor="number" className="mb-2">CARD NUMBER</label>
@@ -75,9 +119,10 @@ const Form = ({onSubmit}) => {
             name = "number"
             placeholder='e.g. 1234 5678 9123 0000'
             value = {formData.number}
-            onChange = {handleInputChange}
+            onChange = {handleInputChangeForNumber}
             className = "border-2 border-gray-300 h-9 pl-2 rounded-lg"
             />
+            <p className="text-red-500">{errors.number}</p>
           </div>
           <div className="flex justify-between">
             <div className="flex flex-col">
@@ -90,6 +135,7 @@ const Form = ({onSubmit}) => {
               onChange = {handleInputChange}
               className = "border-2 border-gray-300 h-9 pl-2 rounded-lg"
               />
+              <p className="text-red-500">{errors.date}</p>
             </div>
             <div className="flex flex-col">
               <label htmlFor="cvc" className="mb-2">CVC</label>
@@ -100,8 +146,9 @@ const Form = ({onSubmit}) => {
               placeholder='e.g. 123'
               value = {formData.cvc}
               onChange={handleInputChange}
-              className = "border-2 border-gray-300 h-9 pl-2 rounded-lg"
+              className = 'border-2 border-gray-300 h-9 pl-2 rounded-lg'
               />
+              <p className="text-red-500">{errors.cvc}</p>
             </div>
           </div>
           <button type="submit" className="w-9/12 h-9 self-center rounded-lg bg-darkViolet color text-white">Confirm</button>
